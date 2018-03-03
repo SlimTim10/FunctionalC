@@ -26,6 +26,7 @@ if (x != NULL) {
 into this:
 
 ```
+#include "maybe.h"
 maybe_do
     (mstart,
     try_thing1,
