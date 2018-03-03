@@ -6,6 +6,8 @@ The [Maybe monad](https://en.wikipedia.org/wiki/Monad_(functional_programming)#T
 
 The `maybe_do` macro supports sequencing up to 10 functions, but it can be expanded to support more if needed.
 
+I created this with Arduino projects in mind. There are often cases where it is necessary to do a sequence of functions based on external factors. The sequence should only continue as each function succeeds, and perhaps passing along data. To use this as an Arduino library, download it as a ZIP and extract the folder to your [Arduino libraries](https://www.arduino.cc/en/hacking/libraries) directory, then rename the folder from `MaybeC-master` to `maybe` and rename `maybe.c` to `maybe.cpp`.
+
 ## Usage
 
 A particularly useful case is turning something like this:
