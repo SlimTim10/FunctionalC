@@ -9,24 +9,26 @@
 
 /* #define PRINTALL */
 
+static int global_i;
+
 /* int -> maybe int */
 static maybe mprint(void *x_) {
-	int *x = (int *) x_;
-	printf("%d\n", *x);
-	return mreturn(x);
+	global_i = *(int *) x_;
+	printf("%d\n", global_i);
+	return mreturn(&global_i);
 }
 
 /* void -> maybe int */
 static maybe try_thing1(void *x_) {
-	int x = 1;
-
+	global_i = 1;
+	
 	int success = true;
 #	if TEST == 4
 	success = false;
 #	endif
 	
 	if (success) {
-		return mreturn(&x);
+		return mreturn(&global_i);
 	} else {
 		return nothing();
 	}
@@ -35,7 +37,7 @@ static maybe try_thing1(void *x_) {
 /* int -> maybe int */
 static maybe try_thing2(void *x_) {
 	int *x = (int *) x_;
-	int r = (*x * 10) + 2;
+	global_i = (*x * 10) + 2;
 
 	int success = true;
 #	if TEST == 3
@@ -43,7 +45,7 @@ static maybe try_thing2(void *x_) {
 #	endif
 
 	if (success) {
-		return mreturn(&r);
+		return mreturn(&global_i);
 	} else {
 		return nothing();
 	}
@@ -52,7 +54,7 @@ static maybe try_thing2(void *x_) {
 /* int -> maybe int */
 static maybe try_thing3(void *x_) {
 	int *x = (int *) x_;
-	int r = (*x * 10) + 3;
+	global_i = (*x * 10) + 3;
 
 	int success = true;
 #	if TEST == 2
@@ -60,7 +62,7 @@ static maybe try_thing3(void *x_) {
 #	endif
 
 	if (success) {
-		return mreturn(&r);
+		return mreturn(&global_i);
 	} else {
 		return nothing();
 	}
