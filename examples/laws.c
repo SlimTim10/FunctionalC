@@ -2,18 +2,29 @@
 #include <stdbool.h>
 #include "../maybe.h"
 
+static int global_i;
+static int global_j;
+static int global_k;
+
 /* int -> maybe int */
 static maybe f(void *x_) {
 	int *x = (int *) x_;
-	int r = *x + 10;
-	mreturn(&r);
+	global_i = *x + 10;
+	mreturn(&global_i);
+}
+
+/* int -> maybe int */
+static maybe f_(void *x_) {
+	int *x = (int *) x_;
+	global_j = *x + 10;
+	mreturn(&global_j);
 }
 
 /* int -> maybe int */
 static maybe g(void *x_) {
 	int *x = (int *) x_;
-	int r = *x + 20;
-	mreturn(&r);
+	global_k = *x + 20;
+	mreturn(&global_k);
 }
 
 /* int -> maybe int */
@@ -32,27 +43,17 @@ static bool eq(maybe x, maybe y) {
 	}
 }
 
-static maybe preserve(maybe x) {
-	if (is_nothing(x)) {
-		return x;
-	} else {
-		int just = *(int *) x.just;
-		maybe r = { .nothing = x.nothing, .just = &just };
-		return r;
-	}
-}
-
 void main(void) {
 	maybe ls;
 	maybe rs;
-	static int x = 3;
+	int x = 3;
 	maybe m1 = { .nothing = false, .just = &x };
 	maybe m2 = { .nothing = true };
 	
 	/* Left identity */
 	/* return x >>= f   =   f x */
-	ls = preserve(bind(f, mreturn(&x)));
-	rs = preserve(f(&x));
+	ls = bind(f, mreturn(&x));
+	rs = f_(&x);
 	if (eq(ls, rs)) {
 		printf("Left identity check passed\n");
 	} else {
@@ -79,16 +80,16 @@ void main(void) {
 
 	/* Associativity */
 	/* (m >>= f) >>= g   =   m >>= (\x -> f x >>= g) */
-	ls = preserve(bind(g, bind(f, m1)));
-	rs = preserve(bind(g_f, m1));
+	ls = bind(g, bind(f_, m1));
+	rs = bind(g_f, m1);
 	if (eq(ls, rs)) {
 		printf("Associativity check passed with Just\n");
 	} else {
 		printf("x Associativity check failed with Just\n");
 	}
 
-	ls = preserve(bind(g, bind(f, m2)));
-	rs = preserve(bind(g_f, m2));
+	ls = bind(g, bind(f_, m2));
+	rs = bind(g_f, m2);
 	if (eq(ls, rs)) {
 		printf("Associativity check passed with Nothing\n");
 	} else {

@@ -3,11 +3,14 @@
 #include <string.h>
 #include "../maybe.h"
 
+static char buf[32];
+
 /* char[] -> maybe char[] */
 static maybe safe_tail(void *xs_) {
 	char *xs = (char *) xs_;
 	if (strlen(xs) > 1) {
-		return mreturn(&xs[1]);
+		sprintf(buf, &xs[1]);
+		return mreturn(buf);
 	} else {
 		return nothing();
 	}
@@ -21,9 +24,10 @@ static maybe mprint(void *xs_) {
 }
 
 void main(void) {
-	static maybe x = {
+	sprintf(buf, "test");
+	maybe x = {
 		.nothing = false,
-		.just = "test"
+		.just = buf
 	};
 
 	bind(mprint, x);
