@@ -26,7 +26,7 @@
 	NAME,\
 	...) NAME
 
-#define maybe_do(...)\
+#define maybe_do_with(...)\
 	GET_MACRO(__VA_ARGS__,\
 		maybe_do10,\
 		maybe_do9,\
@@ -40,6 +40,6 @@
 		maybe_do1)\
 	(__VA_ARGS__)
 
-#define mstart ( mreturn(NULL) )
+#define maybe_do(...) ( maybe_do_with(mreturn(NULL), __VA_ARGS__) )
 
 #endif

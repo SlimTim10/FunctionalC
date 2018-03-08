@@ -72,8 +72,7 @@ void main(void) {
 #	ifdef PRINTALL
 	
 	maybe_do
-		(mstart,
-		 try_thing1,
+		(try_thing1,
 		 mprint,
 		 try_thing2,
 		 mprint,
@@ -83,8 +82,7 @@ void main(void) {
 #	else
 	
 	maybe_do
-		(mstart,
-		 try_thing1,
+		(try_thing1,
 		 try_thing2,
 		 try_thing3,
 		 mprint);
