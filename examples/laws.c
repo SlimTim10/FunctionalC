@@ -2,29 +2,25 @@
 #include <stdbool.h>
 #include "../maybe.h"
 
-static int global_i;
-static int global_j;
-static int global_k;
-
 /* int -> maybe int */
 static maybe f(void *x_) {
 	int *x = (int *) x_;
-	global_i = *x + 10;
-	mreturn(&global_i);
+	static int y; y = *x + 10;
+	mreturn(&y);
 }
 
 /* int -> maybe int */
 static maybe f_(void *x_) {
 	int *x = (int *) x_;
-	global_j = *x + 10;
-	mreturn(&global_j);
+	static int y; y = *x + 10;
+	mreturn(&y);
 }
 
 /* int -> maybe int */
 static maybe g(void *x_) {
 	int *x = (int *) x_;
-	global_k = *x + 20;
-	mreturn(&global_k);
+	static int y; y = *x + 20;
+	mreturn(&y);
 }
 
 /* int -> maybe int */
@@ -46,7 +42,7 @@ static bool eq(maybe x, maybe y) {
 void main(void) {
 	maybe ls;
 	maybe rs;
-	int x = 3;
+	static int x = 3;
 	maybe m1 = { .nothing = false, .just = &x };
 	maybe m2 = { .nothing = true };
 	

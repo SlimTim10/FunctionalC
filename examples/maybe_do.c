@@ -1,6 +1,7 @@
+#include "../maybe.h"
+
 #include <stdio.h>
 #include <stdbool.h>
-#include "../maybe.h"
 
 #define TEST 1
 /* #define TEST 2 */
@@ -9,18 +10,16 @@
 
 /* #define PRINTALL */
 
-static int global_i;
-
 /* int -> maybe int */
 static maybe mprint(void *x_) {
-	global_i = *(int *) x_;
-	printf("%d\n", global_i);
-	return mreturn(&global_i);
+	static int x; x = *(int *) x_;
+	printf("%d\n", x);
+	return mreturn(&x);
 }
 
 /* void -> maybe int */
 static maybe try_thing1(void *x_) {
-	global_i = 1;
+	static int x = 1;
 	
 	int success = true;
 #	if TEST == 4
@@ -28,7 +27,7 @@ static maybe try_thing1(void *x_) {
 #	endif
 	
 	if (success) {
-		return mreturn(&global_i);
+		return mreturn(&x);
 	} else {
 		return nothing();
 	}
@@ -37,7 +36,7 @@ static maybe try_thing1(void *x_) {
 /* int -> maybe int */
 static maybe try_thing2(void *x_) {
 	int *x = (int *) x_;
-	global_i = (*x * 10) + 2;
+	static int y; y = (*x * 10) + 2;
 
 	int success = true;
 #	if TEST == 3
@@ -45,7 +44,7 @@ static maybe try_thing2(void *x_) {
 #	endif
 
 	if (success) {
-		return mreturn(&global_i);
+		return mreturn(&y);
 	} else {
 		return nothing();
 	}
@@ -54,7 +53,7 @@ static maybe try_thing2(void *x_) {
 /* int -> maybe int */
 static maybe try_thing3(void *x_) {
 	int *x = (int *) x_;
-	global_i = (*x * 10) + 3;
+	static int y; y = (*x * 10) + 3;
 
 	int success = true;
 #	if TEST == 2
@@ -62,7 +61,7 @@ static maybe try_thing3(void *x_) {
 #	endif
 
 	if (success) {
-		return mreturn(&global_i);
+		return mreturn(&y);
 	} else {
 		return nothing();
 	}
