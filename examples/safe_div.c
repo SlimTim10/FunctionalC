@@ -1,12 +1,11 @@
+#include "../maybe.h"
+
 #include <stdio.h>
 #include <stdbool.h>
-#include "../maybe.h"
 
 enum {
 	LEN = 6
 };
-
-static int global_i;
 
 /* (int, int) -> maybe int */
 static maybe safe_div(void *x_, void *y_) {
@@ -15,16 +14,16 @@ static maybe safe_div(void *x_, void *y_) {
 	if (*y == 0) {
 		return nothing();
 	} else {
-		global_i = *x / *y;
-		return mreturn(&global_i);
+		static int z; z = *x / *y;
+		return mreturn(&z);
 	}
 }
 
 /* int -> maybe int */
 static maybe safe_inc(void *x_) {
 	int *x = (int *) x_;
-	global_i = *x + 1;
-	return mreturn(&global_i);
+	static int y; y = *x + 1;
+	return mreturn(&y);
 }
 
 /* int -> maybe void */
@@ -35,8 +34,8 @@ static maybe mprint(void *x_) {
 }
 
 void main(void) {
-	int n = 100;
-	int divisors[LEN] = {4, 2, 0, 10, 5, 0};
+	static int n = 100;
+	static int divisors[LEN] = {4, 2, 0, 10, 5, 0};
 
 	int i;
 	for (i = 0; i < LEN; i++) {
@@ -48,9 +47,9 @@ void main(void) {
 
 	printf("\n");
 
-	/* Or with maybe_do */
+	/* Or with maybe_do_with */
 	for (i = 0; i < LEN; i++) {
 		maybe x = safe_div(&n, &divisors[i]);
-		maybe_do(x, safe_inc, safe_inc, mprint);
+		maybe_do_with(x, safe_inc, safe_inc, mprint);
 	}
 }

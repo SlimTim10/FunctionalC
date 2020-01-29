@@ -1,16 +1,14 @@
+#include "../maybe.h"
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../maybe.h"
-
-static char buf[32];
 
 /* char[] -> maybe char[] */
 static maybe safe_tail(void *xs_) {
-	char *xs = (char *) xs_;
+	static char *xs; xs = (char *) xs_;
 	if (strlen(xs) > 1) {
-		sprintf(buf, &xs[1]);
-		return mreturn(buf);
+		return mreturn(&xs[1]);
 	} else {
 		return nothing();
 	}
@@ -24,6 +22,7 @@ static maybe mprint(void *xs_) {
 }
 
 void main(void) {
+	static char buf[32];
 	sprintf(buf, "test");
 	maybe x = {
 		.nothing = false,
