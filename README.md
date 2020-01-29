@@ -30,8 +30,7 @@ into this:
 ```
 #include "maybe.h"
 maybe_do
-    (mstart,
-    try_thing1,
+    (try_thing1,
     try_thing2,
     try_thing3,
     final_thing);
