@@ -1,6 +1,7 @@
+#include "../maybe.h"
+
 #include <stdio.h>
 #include <stdbool.h>
-#include "../maybe.h"
 
 /* int -> maybe int */
 static maybe f(void *x_) {
