@@ -16,11 +16,9 @@ maybe nothing(void) {
 }
 
 maybe bind(maybe_f f, maybe x) {
-	if (x.nothing) {
-		return nothing();
-	} else {
-		return f(x.just);
-	}
+	return x.nothing
+		? nothing()
+		: f(x.just);
 }
 
 bool is_nothing(maybe x) {

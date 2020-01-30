@@ -25,12 +25,10 @@ static maybe try_thing1(void *x_) {
 #	if TEST == 4
 	success = false;
 #	endif
-	
-	if (success) {
-		return mreturn(&x);
-	} else {
-		return nothing();
-	}
+
+	return success
+		? mreturn(&x)
+		: nothing();
 }
 
 /* int -> maybe int */
@@ -43,11 +41,9 @@ static maybe try_thing2(void *x_) {
 	success = false;
 #	endif
 
-	if (success) {
-		return mreturn(&y);
-	} else {
-		return nothing();
-	}
+	return success
+		? mreturn(&y)
+		: nothing();
 }
 
 /* int -> maybe int */
@@ -60,11 +56,9 @@ static maybe try_thing3(void *x_) {
 	success = false;
 #	endif
 
-	if (success) {
-		return mreturn(&y);
-	} else {
-		return nothing();
-	}
+	return success
+		? mreturn(&y)
+		: nothing();
 }
 
 void main(void) {

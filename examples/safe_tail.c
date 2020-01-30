@@ -7,11 +7,9 @@
 /* char[] -> maybe char[] */
 static maybe safe_tail(void *xs_) {
 	static char *xs; xs = (char *) xs_;
-	if (strlen(xs) > 1) {
-		return mreturn(&xs[1]);
-	} else {
-		return nothing();
-	}
+	return (strlen(xs) > 1)
+		? mreturn(&xs[1])
+		: nothing();
 }
 
 /* char[] -> maybe void */

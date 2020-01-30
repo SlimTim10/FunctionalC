@@ -11,12 +11,14 @@ enum {
 static maybe safe_div(void *x_, void *y_) {
 	int *x = (int *) x_;
 	int *y = (int *) y_;
-	if (*y == 0) {
-		return nothing();
-	} else {
-		static int z; z = *x / *y;
-		return mreturn(&z);
-	}
+
+	static int z;
+	return (*y != 0)
+		? (
+		   z = *x / *y,
+		   mreturn(&z)
+		   )
+		: nothing();
 }
 
 /* int -> maybe int */
