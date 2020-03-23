@@ -1,0 +1,55 @@
+* FunctionalC
+
+** Description
+
+A collection of tools from functional programming ported to C99.
+
+** Contents
+
+- map
+- forEach
+- maybe monad
+
+** Maybe
+
+*** Description
+
+The [[https://en.wikipedia.org/wiki/Monad_(functional_programming)][maybe monad]] in C99. For facilitating error handling and function sequencing.
+
+The ~maybe_do~ macro supports sequencing up to 10 functions, but it can be expanded to support more if needed.
+
+This was created with embedded systems projects in mind. There are often cases where it is necessary to do a sequence of functions based on external factors. The sequence should only continue as each function succeeds, and perhaps pass along data from one function to the next.
+
+*** Usage
+
+A particularly useful case is turning something like this:
+
+#+BEGIN_SRC C
+int x = try_thing1();
+if (x != NULL) {
+    int y = try_thing2(x);
+    if (y != NULL) {
+        int z = try_thing3(y);
+        if (z != NULL) {
+            final_thing(z);
+        }
+    }
+}
+#+END_SRC
+
+into this:
+
+#+BEGIN_SRC C
+#include "maybe.h"
+maybe_do
+    (try_thing1,
+    try_thing2,
+    try_thing3,
+    final_thing);
+#+END_SRC
+
+See ~examples/~ for more example usage.
+
+** Arduino
+
+To use this as an Arduino library, download it as a ZIP and extract the folder to your [[https://www.arduino.cc/en/hacking/libraries][Arduino libraries]] directory, then rename the folder from ~FunctionalC-master~ to ~FunctionalC~ and rename all ~*.c~ files to ~*.cpp~.
